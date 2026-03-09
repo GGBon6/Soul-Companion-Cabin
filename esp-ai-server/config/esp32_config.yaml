@@ -1,0 +1,86 @@
+# ESP32设备配置
+# ESP32 Device Configuration
+
+# 设备连接配置
+connection:
+  # Hello消息超时时间（秒）
+  hello_timeout: 10
+  # 最大连接设备数
+  max_devices: 100
+  # 设备会话超时时间（秒）
+  session_timeout: 3600
+
+# 音频配置
+audio:
+  # 默认采样率
+  default_sample_rate: 16000
+  # 默认帧时长（毫秒）
+  default_frame_duration: 20
+  # 支持的协议版本
+  supported_versions: [2, 3]
+  # Opus编解码器配置
+  opus:
+    application: voip  # voip, audio, restricted_lowdelay
+    bitrate: 64000     # 比特率
+    complexity: 10     # 复杂度 (0-10)
+
+# 对话配置
+chat:
+  # 使用ChatAgent架构
+  use_chat_agent: true
+  # 历史消息限制
+  max_history_length: 50
+  # 自动保存对话历史
+  auto_save_history: true
+  # 记忆管理配置
+  memory:
+    # 启用记忆功能
+    enabled: true
+    # 记忆模式：normal, tree_hole
+    mode: normal
+    # 写入门控策略
+    write_gate_policy: moderate
+
+# TTS配置
+tts:
+  # 默认音色
+  default_voice: longhan_v2
+  # 从用户档案获取音色偏好
+  use_profile_voice: true
+  # 音频格式转换
+  audio_format:
+    # 输出采样率
+    output_sample_rate: 16000
+    # 输出声道数
+    output_channels: 1
+
+# 日志配置
+logging:
+  # 设备连接日志级别
+  connection_level: INFO
+  # 音频处理日志级别
+  audio_level: DEBUG
+  # 对话处理日志级别
+  chat_level: INFO
+  # 协议解析日志级别
+  protocol_level: DEBUG
+
+# 性能配置
+performance:
+  # 音频帧缓冲区大小
+  audio_buffer_size: 4096
+  # 并发处理限制
+  max_concurrent_audio: 10
+  # 内存清理间隔（秒）
+  cleanup_interval: 300
+
+# 安全配置
+security:
+  # 设备ID验证
+  validate_device_id: true
+  # 允许的设备ID模式（正则表达式）
+  allowed_device_pattern: "^[a-zA-Z0-9_-]+$"
+  # 最大消息大小（字节）
+  max_message_size: 1048576  # 1MB
+  # 速率限制（消息/秒）
+  rate_limit: 100

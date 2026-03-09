@@ -1,0 +1,16 @@
+{
+  "user_id": "risk_test_user",
+  "last_updated": "2025-11-14T11:31:56.432773",
+  "point_count": 1,
+  "points": [
+    {
+      "ts": "2025-11-14T11:31:56.432773",
+      "raw": "我不想活了",
+      "score": {
+        "label": "绝望",
+        "intensity": 10
+      },
+      "timestamp": "2025-11-14T11:31:56.432773"
+    }
+  ]
+}

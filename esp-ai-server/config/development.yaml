@@ -1,0 +1,58 @@
+# 开发环境配置
+# Development Environment Configuration
+
+environment: development
+debug: true
+
+server:
+  host: "0.0.0.0"
+  port: 8766
+  http_port: 8080
+
+features:
+  enable_ota: true
+  enable_websocket: true
+  enable_http_api: true
+  enable_metrics: false
+
+ai:
+  llm:
+    model: "qwen-plus"
+    max_tokens: 2000
+    temperature: 0.8
+    # 并发控制配置
+    max_concurrent: 50        # 全局最大并发数
+    web_max_concurrent: 30    # Web端最大并发
+    esp32_max_concurrent: 15  # ESP32设备最大并发
+    system_max_concurrent: 5  # 系统内部最大并发
+  
+  asr:
+    model: "paraformer-realtime-v2"
+    sample_rate: 16000
+    # ASR连接池配置
+    pool:
+      min_connections: 2  # 最小连接数
+      max_connections: 10  # 最大连接数
+      max_idle_time: 300  # 最大空闲时间（秒）
+      health_check_interval: 60  # 健康检查间隔（秒）
+      acquire_timeout: 30.0  # 获取连接超时（秒）
+  
+  tts:
+    model: "cosyvoice-v2"
+    voice: "longhan_v2"
+    sample_rate: 22050
+    volume: 50
+    speech_rate: 1.0
+
+websocket:
+  heartbeat_interval: 30
+  heartbeat_timeout: 60
+  idle_timeout: 300
+
+history:
+  max_messages: 50
+  max_context: 20
+
+logging:
+  level: "DEBUG"
+  file: "app.log"

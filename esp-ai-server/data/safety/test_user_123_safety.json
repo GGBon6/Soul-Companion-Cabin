@@ -1,0 +1,17 @@
+{
+  "user_id": "test_user_123",
+  "last_updated": "2025-11-13T17:11:43.359282",
+  "record_count": 1,
+  "records": [
+    {
+      "ts": "2025-11-13T17:11:43.358778",
+      "content": "压力很大",
+      "matched": {
+        "keyword": "压力很大",
+        "severity": 2
+      },
+      "timestamp": "2025-11-13T17:11:43.359282",
+      "record_id": "test_user_123_0_1763025103.359282"
+    }
+  ]
+}

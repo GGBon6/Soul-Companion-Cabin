@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天记录 - 心灵小屋</title>
+    <link rel="stylesheet" href="../src/css/main.css">
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --primary-dark: #e55555;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-light: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-light: #999999;
+            --border-color: #444444;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .date-input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .history-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .history-stats {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-info {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .toggle-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-light);
+            color: var(--text-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .history-content {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        /* 时间轴视图 */
+        .timeline-view {
+            padding: 20px;
+        }
+
+        .date-group {
+            margin-bottom: 30px;
+        }
+
+        .date-header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            padding: 12px 0;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--primary-color);
+            font-weight: bold;
+            color: var(--primary-color);
+            z-index: 10;
+        }
+
+        .message-item {
+            display: flex;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .message-item:hover {
+            background: #404040;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .message-avatar.user {
+            background: var(--gradient);
+        }
+
+        .message-avatar.assistant {
+            background: var(--bg-secondary);
+            border: 2px solid var(--primary-color);
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .message-time {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .message-text {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        /* 列表视图 */
+        .list-view {
+            padding: 0;
+        }
+
+        .list-view .message-item {
+            border-radius: 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0;
+        }
+
+        .list-view .message-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 搜索结果高亮 */
+        .highlight {
+            background: yellow;
+            color: black;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-light);
+            color: var(--text-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-info {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* 加载状态 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        .loading::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .search-filters {
+                flex-direction: column;
+            }
+
+            .message-item {
+                padding: 8px;
+            }
+
+            .message-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>📜 聊天记录</h1>
+            <div class="header-actions">
+                <a href="index.html" class="btn btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    返回聊天
+                </a>
+                <button class="btn btn-primary" id="exportBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7,10 12,15 17,10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    导出记录
+                </button>
+            </div>
+        </div>
+
+        <!-- 搜索栏 -->
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索聊天记录...">
+            <div class="search-filters">
+                <input type="date" class="date-input" id="startDate" title="开始日期">
+                <input type="date" class="date-input" id="endDate" title="结束日期">
+                <button class="btn btn-secondary" id="clearFilters">清除筛选</button>
+            </div>
+        </div>
+
+        <!-- 历史记录容器 -->
+        <div class="history-container">
+            <!-- 统计信息 -->
+            <div class="history-stats">
+                <div class="stats-info" id="statsInfo">
+                    正在加载...
+                </div>
+                <div class="view-toggle">
+                    <button class="toggle-btn active" data-view="timeline">时间轴</button>
+                    <button class="toggle-btn" data-view="list">列表</button>
+                </div>
+            </div>
+
+            <!-- 历史记录内容 -->
+            <div class="history-content" id="historyContent">
+                <div class="loading">正在加载聊天记录...</div>
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination" id="pagination" style="display: none;">
+                <button class="page-btn" id="prevBtn">上一页</button>
+                <div class="page-info" id="pageInfo"></div>
+                <button class="page-btn" id="nextBtn">下一页</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入配置和工具 -->
+    <script src="../config.js"></script>
+    <script src="../src/js/utils.js"></script>
+    <script src="../src/js/auth.js"></script>
+    
+    <script>
+        class ChatHistory {
+            constructor() {
+                this.ws = null;
+                this.currentView = 'timeline';
+                this.currentPage = 1;
+                this.pageSize = 50;
+                this.totalPages = 0;
+                this.searchQuery = '';
+                this.startDate = '';
+                this.endDate = '';
+                this.groupedHistory = {};
+                this.isLoading = false;
+                
+                this.init();
+            }
+            
+            async init() {
+                // 检查登录状态
+                const userInfo = AuthManager.getUserInfo();
+                if (!userInfo) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                this.setupEventListeners();
+                await this.connectWebSocket();
+                this.loadGroupedHistory();
+            }
+            
+            setupEventListeners() {
+                // 搜索
+                const searchInput = document.getElementById('searchInput');
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        this.searchQuery = e.target.value.trim();
+                        this.searchMessages();
+                    }, 500);
+                });
+                
+                // 日期筛选
+                document.getElementById('startDate').addEventListener('change', (e) => {
+                    this.startDate = e.target.value;
+                    this.filterByDate();
+                });
+                
+                document.getElementById('endDate').addEventListener('change', (e) => {
+                    this.endDate = e.target.value;
+                    this.filterByDate();
+                });
+                
+                // 清除筛选
+                document.getElementById('clearFilters').addEventListener('click', () => {
+                    this.clearFilters();
+                });
+                
+                // 视图切换
+                document.querySelectorAll('.toggle-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const view = e.target.dataset.view;
+                        this.switchView(view);
+                    });
+                });
+                
+                // 分页
+                document.getElementById('prevBtn').addEventListener('click', () => {
+                    if (this.currentPage > 1) {
+                        this.currentPage--;
+                        this.loadPaginatedHistory();
+                    }
+                });
+                
+                document.getElementById('nextBtn').addEventListener('click', () => {
+                    if (this.currentPage < this.totalPages) {
+                        this.currentPage++;
+                        this.loadPaginatedHistory();
+                    }
+                });
+                
+                // 导出
+                document.getElementById('exportBtn').addEventListener('click', () => {
+                    this.exportHistory();
+                });
+            }
+            
+            async connectWebSocket() {
+                return new Promise((resolve, reject) => {
+                    try {
+                        this.ws = new WebSocket(CONFIG.WEBSOCKET.URL);
+                        
+                        this.ws.onopen = () => {
+                            console.log('WebSocket连接成功');
+                            // 发送认证信息
+                            const userInfo = AuthManager.getUserInfo();
+                            this.sendMessage('session_auth', {
+                                user_id: userInfo.user_id,
+                                session_token: userInfo.session_token
+                            });
+                            resolve();
+                        };
+                        
+                        this.ws.onmessage = (event) => {
+                            this.handleMessage(JSON.parse(event.data));
+                        };
+                        
+                        this.ws.onerror = (error) => {
+                            console.error('WebSocket错误:', error);
+                            reject(error);
+                        };
+                        
+                        this.ws.onclose = () => {
+                            console.log('WebSocket连接关闭');
+                        };
+                        
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            }
+            
+            sendMessage(type, data) {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify({ type, ...data }));
+                }
+            }
+            
+            handleMessage(message) {
+                const { type, ...data } = message;
+                
+                switch (type) {
+                    case 'grouped_history':
+                        this.handleGroupedHistory(data);
+                        break;
+                    case 'paginated_history':
+                        this.handlePaginatedHistory(data);
+                        break;
+                    case 'search_results':
+                        this.handleSearchResults(data);
+                        break;
+                    case 'history_by_date':
+                        this.handleHistoryByDate(data);
+                        break;
+                    case 'error':
+                        this.showError(data);
+                        break;
+                }
+            }
+            
+            loadGroupedHistory() {
+                this.isLoading = true;
+                this.showLoading();
+                this.sendMessage('get_grouped_history', {});
+            }
+            
+            loadPaginatedHistory() {
+                this.isLoading = true;
+                this.showLoading();
+                this.sendMessage('get_paginated_history', {
+                    page: this.currentPage,
+                    page_size: this.pageSize,
+                    search_query: this.searchQuery || null
+                });
+            }
+            
+            searchMessages() {
+                if (!this.searchQuery) {
+                    this.loadGroupedHistory();
+                    return;
+                }
+                
+                this.isLoading = true;
+                this.showLoading();
+                this.sendMessage('search_messages', {
+                    query: this.searchQuery,
+                    limit: 100
+                });
+            }
+            
+            filterByDate() {
+                if (!this.startDate && !this.endDate) {
+                    this.loadGroupedHistory();
+                    return;
+                }
+                
+                this.isLoading = true;
+                this.showLoading();
+                this.sendMessage('get_history_by_date', {
+                    start_date: this.startDate || null,
+                    end_date: this.endDate || null
+                });
+            }
+            
+            clearFilters() {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('startDate').value = '';
+                document.getElementById('endDate').value = '';
+                this.searchQuery = '';
+                this.startDate = '';
+                this.endDate = '';
+                this.loadGroupedHistory();
+            }
+            
+            switchView(view) {
+                this.currentView = view;
+                
+                // 更新按钮状态
+                document.querySelectorAll('.toggle-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === view);
+                });
+                
+                // 重新渲染
+                this.renderHistory();
+            }
+            
+            handleGroupedHistory(data) {
+                this.groupedHistory = data.grouped_messages;
+                this.updateStats(data.statistics);
+                this.renderHistory();
+                this.hidePagination();
+                this.isLoading = false;
+            }
+            
+            handlePaginatedHistory(data) {
+                this.currentPage = data.pagination.current_page;
+                this.totalPages = data.pagination.total_pages;
+                this.renderPaginatedMessages(data.messages);
+                this.updatePagination(data.pagination);
+                this.showPagination();
+                this.isLoading = false;
+            }
+            
+            handleSearchResults(data) {
+                this.renderSearchResults(data.results, data.query);
+                this.updateStats({ total_messages: data.total_found, search_query: data.query });
+                this.hidePagination();
+                this.isLoading = false;
+            }
+            
+            handleHistoryByDate(data) {
+                // 将消息按日期分组
+                const grouped = {};
+                data.messages.forEach(msg => {
+                    const date = msg.timestamp.split('T')[0];
+                    if (!grouped[date]) grouped[date] = [];
+                    grouped[date].push(msg);
+                });
+                
+                this.groupedHistory = grouped;
+                this.updateStats({ 
+                    total_messages: data.total_messages,
+                    date_range: `${data.start_date || '开始'} - ${data.end_date || '结束'}`
+                });
+                this.renderHistory();
+                this.hidePagination();
+                this.isLoading = false;
+            }
+            
+            renderHistory() {
+                const container = document.getElementById('historyContent');
+                
+                if (Object.keys(this.groupedHistory).length === 0) {
+                    this.showEmptyState();
+                    return;
+                }
+                
+                if (this.currentView === 'timeline') {
+                    this.renderTimelineView(container);
+                } else {
+                    this.renderListView(container);
+                }
+            }
+            
+            renderTimelineView(container) {
+                container.innerHTML = '<div class="timeline-view"></div>';
+                const timeline = container.querySelector('.timeline-view');
+                
+                Object.entries(this.groupedHistory).forEach(([date, messages]) => {
+                    const dateGroup = document.createElement('div');
+                    dateGroup.className = 'date-group';
+                    
+                    const dateHeader = document.createElement('div');
+                    dateHeader.className = 'date-header';
+                    dateHeader.textContent = this.formatDate(date);
+                    dateGroup.appendChild(dateHeader);
+                    
+                    messages.forEach(msg => {
+                        if (msg.role === 'system') return;
+                        dateGroup.appendChild(this.createMessageElement(msg));
+                    });
+                    
+                    timeline.appendChild(dateGroup);
+                });
+            }
+            
+            renderListView(container) {
+                container.innerHTML = '<div class="list-view"></div>';
+                const listView = container.querySelector('.list-view');
+                
+                const allMessages = [];
+                Object.values(this.groupedHistory).forEach(messages => {
+                    allMessages.push(...messages.filter(msg => msg.role !== 'system'));
+                });
+                
+                allMessages.forEach(msg => {
+                    listView.appendChild(this.createMessageElement(msg));
+                });
+            }
+            
+            renderPaginatedMessages(messages) {
+                const container = document.getElementById('historyContent');
+                container.innerHTML = '<div class="list-view"></div>';
+                const listView = container.querySelector('.list-view');
+                
+                messages.forEach(msg => {
+                    if (msg.role === 'system') return;
+                    listView.appendChild(this.createMessageElement(msg));
+                });
+            }
+            
+            renderSearchResults(results, query) {
+                const container = document.getElementById('historyContent');
+                container.innerHTML = '<div class="search-results"></div>';
+                const searchResults = container.querySelector('.search-results');
+                
+                if (results.length === 0) {
+                    this.showEmptyState(`没有找到包含 "${query}" 的消息`);
+                    return;
+                }
+                
+                results.forEach(result => {
+                    const resultGroup = document.createElement('div');
+                    resultGroup.className = 'search-result-group';
+                    resultGroup.style.marginBottom = '20px';
+                    
+                    // 显示上下文消息
+                    result.context.forEach(msg => {
+                        if (msg.role === 'system') return;
+                        const msgElement = this.createMessageElement(msg);
+                        
+                        // 高亮匹配的消息
+                        if (msg === result.matched_message) {
+                            msgElement.style.border = '2px solid var(--primary-color)';
+                            msgElement.style.background = 'rgba(255, 107, 107, 0.1)';
+                        }
+                        
+                        // 高亮搜索关键词
+                        this.highlightText(msgElement, query);
+                        resultGroup.appendChild(msgElement);
+                    });
+                    
+                    searchResults.appendChild(resultGroup);
+                });
+            }
+            
+            createMessageElement(msg) {
+                const messageItem = document.createElement('div');
+                messageItem.className = 'message-item';
+                
+                const avatar = document.createElement('div');
+                avatar.className = `message-avatar ${msg.role}`;
+                avatar.textContent = msg.role === 'user' ? '👤' : '🦊';
+                
+                const content = document.createElement('div');
+                content.className = 'message-content';
+                
+                const header = document.createElement('div');
+                header.className = 'message-header';
+                
+                const sender = document.createElement('div');
+                sender.className = 'message-sender';
+                sender.textContent = msg.role === 'user' ? '我' : 'AI小伙伴';
+                
+                const time = document.createElement('div');
+                time.className = 'message-time';
+                time.textContent = this.formatTime(msg.timestamp);
+                
+                header.appendChild(sender);
+                header.appendChild(time);
+                
+                const text = document.createElement('div');
+                text.className = 'message-text';
+                text.textContent = msg.content;
+                
+                content.appendChild(header);
+                content.appendChild(text);
+                
+                messageItem.appendChild(avatar);
+                messageItem.appendChild(content);
+                
+                return messageItem;
+            }
+            
+            highlightText(element, query) {
+                const textElements = element.querySelectorAll('.message-text');
+                textElements.forEach(textEl => {
+                    const text = textEl.textContent;
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    const highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
+                    textEl.innerHTML = highlightedText;
+                });
+            }
+            
+            updateStats(stats) {
+                const statsInfo = document.getElementById('statsInfo');
+                let text = `共 ${stats.total_messages || 0} 条消息`;
+                
+                if (stats.total_days) {
+                    text += `，跨越 ${stats.total_days} 天`;
+                }
+                
+                if (stats.search_query) {
+                    text += `，搜索: "${stats.search_query}"`;
+                }
+                
+                if (stats.date_range) {
+                    text += `，日期: ${stats.date_range}`;
+                }
+                
+                statsInfo.textContent = text;
+            }
+            
+            updatePagination(pagination) {
+                const pageInfo = document.getElementById('pageInfo');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                
+                pageInfo.textContent = `第 ${pagination.current_page} 页，共 ${pagination.total_pages} 页`;
+                prevBtn.disabled = !pagination.has_prev;
+                nextBtn.disabled = !pagination.has_next;
+            }
+            
+            showPagination() {
+                document.getElementById('pagination').style.display = 'flex';
+            }
+            
+            hidePagination() {
+                document.getElementById('pagination').style.display = 'none';
+            }
+            
+            showLoading() {
+                const container = document.getElementById('historyContent');
+                container.innerHTML = '<div class="loading">正在加载聊天记录...</div>';
+            }
+            
+            showEmptyState(message = '暂无聊天记录') {
+                const container = document.getElementById('historyContent');
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+            
+            showError(error) {
+                console.error('聊天记录错误:', error);
+                this.showEmptyState('加载聊天记录失败');
+            }
+            
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                const today = new Date();
+                const yesterday = new Date(today);
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (date.toDateString() === today.toDateString()) {
+                    return '今天';
+                } else if (date.toDateString() === yesterday.toDateString()) {
+                    return '昨天';
+                } else {
+                    return date.toLocaleDateString('zh-CN', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        weekday: 'long'
+                    });
+                }
+            }
+            
+            formatTime(timestamp) {
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString('zh-CN', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            
+            exportHistory() {
+                // 导出聊天记录为JSON或文本文件
+                const data = {
+                    export_time: new Date().toISOString(),
+                    user_info: AuthManager.getUserInfo(),
+                    chat_history: this.groupedHistory
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], {
+                    type: 'application/json'
+                });
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `心灵小屋聊天记录_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+        
+        // 初始化聊天记录页面
+        document.addEventListener('DOMContentLoaded', () => {
+            new ChatHistory();
+        });
+    </script>
+</body>
+</html>

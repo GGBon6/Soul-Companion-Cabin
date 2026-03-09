@@ -1,0 +1,307 @@
+# 硬件设备日志配置
+# Hardware Device Logging Configuration
+
+# 全局设置
+global:
+  # 日志目录
+  log_directory: "logs/devices"
+  
+  # 日志级别 (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  log_level: "INFO"
+  
+  # 是否启用控制台输出
+  enable_console: true
+  
+  # 是否启用文件日志
+  enable_file_logging: true
+  
+  # 是否启用JSON结构化日志
+  enable_json_logging: true
+  
+  # 日志文件轮转设置
+  rotation:
+    # 轮转方式: time (按时间) 或 size (按大小)
+    type: "time"
+    # 时间轮转: midnight, H (小时), D (天), W (周)
+    when: "midnight"
+    # 轮转间隔
+    interval: 1
+    # 保留文件数量
+    backup_count: 7
+    # 文件大小轮转阈值 (仅当type=size时)
+    max_bytes: 10485760  # 10MB
+
+# ESP32设备专用配置
+esp32:
+  # 设备类型标识
+  device_type: "ESP32"
+  
+  # 连接日志
+  connection:
+    enabled: true
+    log_level: "INFO"
+    # 记录的事件类型
+    events:
+      - "连接建立"
+      - "连接断开" 
+      - "连接失败"
+      - "握手完成"
+      - "心跳检测"
+      - "超时清理"
+  
+  # 协议日志
+  protocol:
+    enabled: true
+    log_level: "INFO"
+    # 记录的消息类型
+    message_types:
+      - "hello"
+      - "audio"
+      - "text"
+      - "control"
+      - "status"
+      - "heartbeat"
+    # 是否记录消息内容 (可能包含敏感信息)
+    log_message_content: false
+    # 是否记录二进制数据的十六进制预览
+    log_hex_preview: true
+    # 十六进制预览长度
+    hex_preview_length: 32
+  
+  # 音频日志
+  audio:
+    enabled: true
+    log_level: "INFO"
+    # 记录的音频事件
+    events:
+      - "音频帧接收"
+      - "音频帧发送"
+      - "TTS音频生成"
+      - "ASR识别开始"
+      - "ASR识别完成"
+      - "音频编码"
+      - "音频解码"
+    # 是否记录音频数据统计
+    log_audio_stats: true
+    # 是否记录音频质量指标
+    log_quality_metrics: true
+  
+  # 服务日志
+  service:
+    enabled: true
+    log_level: "INFO"
+    # 监控的服务
+    services:
+      - "ASR服务"
+      - "TTS服务"
+      - "意图识别"
+      - "对话管理"
+      - "VAD服务"
+      - "连接管理"
+    # 是否记录服务性能指标
+    log_performance: true
+    # 性能指标阈值 (超过阈值会记录WARNING)
+    performance_thresholds:
+      asr_processing_time: 3.0      # ASR处理时间 (秒)
+      tts_generation_time: 2.0      # TTS生成时间 (秒)
+      message_processing_time: 0.5  # 消息处理时间 (秒)
+      audio_encoding_time: 0.1      # 音频编码时间 (秒)
+  
+  # 错误日志
+  error:
+    enabled: true
+    log_level: "ERROR"
+    # 错误类型分类
+    error_types:
+      - "连接错误"
+      - "协议错误"
+      - "音频错误"
+      - "服务错误"
+      - "认证错误"
+      - "超时错误"
+    # 是否记录错误堆栈
+    log_stack_trace: true
+    # 是否发送错误通知 (未来功能)
+    send_notifications: false
+  
+  # 性能日志
+  performance:
+    enabled: true
+    log_level: "INFO"
+    # 监控的操作
+    operations:
+      - "语音识别"
+      - "语音合成"
+      - "消息处理"
+      - "音频编码"
+      - "音频解码"
+      - "数据传输"
+    # 采样率 (0.0-1.0, 1.0表示记录所有操作)
+    sampling_rate: 1.0
+    # 是否记录详细的性能分析
+    detailed_profiling: false
+
+# 统计和监控
+monitoring:
+  # 是否启用实时统计
+  enable_stats: true
+  
+  # 统计报告间隔 (秒)
+  stats_report_interval: 300  # 5分钟
+  
+  # 是否启用设备健康检查
+  enable_health_check: true
+  
+  # 健康检查间隔 (秒)
+  health_check_interval: 60  # 1分钟
+  
+  # 非活跃设备超时 (秒)
+  inactive_device_timeout: 300  # 5分钟
+  
+  # 是否自动清理非活跃设备
+  auto_cleanup_inactive: true
+
+# 日志过滤和采样
+filtering:
+  # 消息频率限制 (防止日志刷屏)
+  rate_limiting:
+    enabled: true
+    # 每秒最大日志条数
+    max_logs_per_second: 100
+    # 突发允许的额外日志数
+    burst_size: 200
+  
+  # 重复消息过滤
+  duplicate_filtering:
+    enabled: true
+    # 重复消息检测窗口 (秒)
+    window_size: 60
+    # 最大重复次数
+    max_duplicates: 10
+  
+  # 敏感信息过滤
+  sensitive_data_filtering:
+    enabled: true
+    # 需要过滤的字段
+    filtered_fields:
+      - "password"
+      - "token"
+      - "api_key"
+      - "secret"
+    # 替换文本
+    replacement_text: "[FILTERED]"
+
+# 日志输出格式
+formatting:
+  # 时间戳格式
+  timestamp_format: "%Y-%m-%d %H:%M:%S"
+  
+  # 控制台输出格式
+  console_format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # 文件输出格式
+  file_format: "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s"
+  
+  # JSON输出字段
+  json_fields:
+    - "timestamp"
+    - "device_type"
+    - "level"
+    - "logger"
+    - "message"
+    - "device_id"
+    - "session_id"
+    - "message_type"
+    - "data_size"
+    - "processing_time"
+    - "module"
+    - "function"
+    - "line"
+  
+  # 是否使用彩色输出 (控制台)
+  use_colors: true
+  
+  # 是否使用emoji图标
+  use_emojis: true
+
+# 存储和归档
+storage:
+  # 日志文件压缩
+  compression:
+    enabled: true
+    # 压缩格式: gzip, bz2, xz
+    format: "gzip"
+    # 压缩延迟 (天)
+    delay_days: 1
+  
+  # 日志归档
+  archiving:
+    enabled: false
+    # 归档目录
+    archive_directory: "logs/archive"
+    # 归档周期 (天)
+    archive_after_days: 30
+    # 归档格式
+    archive_format: "tar.gz"
+  
+  # 日志清理
+  cleanup:
+    enabled: true
+    # 保留时间 (天)
+    retention_days: 30
+    # 清理检查间隔 (小时)
+    cleanup_interval_hours: 24
+
+# 集成和通知
+integration:
+  # 外部日志系统集成
+  external_logging:
+    enabled: false
+    # 支持的系统: elasticsearch, splunk, fluentd
+    system: "elasticsearch"
+    # 连接配置
+    connection:
+      host: "localhost"
+      port: 9200
+      index: "esp32-logs"
+  
+  # 告警通知
+  alerting:
+    enabled: false
+    # 告警条件
+    conditions:
+      - type: "error_rate"
+        threshold: 10  # 每分钟错误数
+        window: 60     # 时间窗口 (秒)
+      - type: "connection_failure"
+        threshold: 5   # 连续失败次数
+    # 通知方式
+    notifications:
+      - type: "email"
+        recipients: ["admin@example.com"]
+      - type: "webhook"
+        url: "https://hooks.slack.com/services/..."
+
+# 调试和开发
+debug:
+  # 开发模式
+  development_mode: false
+  
+  # 详细调试日志
+  verbose_logging: false
+  
+  # 性能分析
+  profiling:
+    enabled: false
+    # 分析器类型: cProfile, line_profiler
+    profiler: "cProfile"
+    # 输出目录
+    output_directory: "logs/profiling"
+  
+  # 内存使用监控
+  memory_monitoring:
+    enabled: false
+    # 监控间隔 (秒)
+    interval: 60
+    # 内存使用阈值 (MB)
+    threshold: 100

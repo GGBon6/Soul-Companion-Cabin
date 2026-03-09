@@ -1,0 +1,192 @@
+# 青少年心理对话配置
+# Youth Psychology Configuration
+
+# 意图识别配置
+intent_recognition:
+  # 启用青少年心理意图识别
+  enabled: true
+  
+  # 危机检测配置
+  crisis_detection:
+    enabled: true
+    # 危机关键词敏感度 (0.0-1.0)
+    sensitivity: 0.8
+    # 自动触发专业转介的风险等级
+    auto_referral_risk_levels: ["critical"]
+  
+  # 情感分析配置
+  emotional_analysis:
+    enabled: true
+    # 情感强度阈值，超过此值会特别关注
+    intensity_threshold: 0.7
+  
+  # 缓存配置
+  cache:
+    enabled: true
+    # 缓存TTL（秒）
+    ttl: 300
+    # 最大缓存条目数
+    max_entries: 1000
+
+# 响应生成配置
+response_generation:
+  # 响应模式: supportive(支持性), professional(专业性), casual(轻松)
+  mode: "supportive"
+  
+  # 使用预定义模板还是LLM生成
+  use_templates: true
+  
+  # LLM生成参数
+  llm_params:
+    temperature: 0.7
+    max_tokens: 500
+    timeout: 10.0
+
+# 青少年心理健康资源
+resources:
+  # 危机干预热线
+  crisis_hotlines:
+    - name: "全国心理危机干预热线"
+      number: "400-161-9995"
+      description: "24小时心理危机干预服务"
+    
+    - name: "青少年心理热线"
+      number: "12355"
+      description: "专门为青少年提供心理支持"
+    
+    - name: "北京危机干预热线"
+      number: "400-161-9995"
+      description: "北京地区心理危机干预"
+  
+  # 在线心理健康平台
+  online_platforms:
+    - name: "壹心理"
+      url: "https://www.xinli001.com"
+      description: "专业心理咨询平台"
+    
+    - name: "简单心理"
+      url: "https://www.jiandanxinli.com"
+      description: "青少年心理健康服务"
+  
+  # 自助资源
+  self_help:
+    - name: "正念冥想应用"
+      description: "帮助缓解焦虑和压力"
+    
+    - name: "情绪日记"
+      description: "记录和分析情绪变化"
+    
+    - name: "放松技巧视频"
+      description: "学习深呼吸和肌肉放松"
+
+# 风险评估配置
+risk_assessment:
+  # 风险等级阈值
+  thresholds:
+    low: 0.3
+    medium: 0.6
+    high: 0.8
+    critical: 0.9
+  
+  # 风险因素权重
+  risk_factors:
+    suicide_keywords: 0.9
+    self_harm_keywords: 0.8
+    severe_depression: 0.7
+    social_isolation: 0.6
+    family_conflict: 0.5
+    academic_pressure: 0.4
+
+# 对话管理配置
+conversation:
+  # 最大对话历史长度
+  max_history_length: 10
+  
+  # 会话超时时间（分钟）
+  session_timeout: 30
+  
+  # 是否保存敏感对话记录
+  save_sensitive_conversations: false
+  
+  # 自动总结会话
+  auto_summarize: true
+
+# 专业转介配置
+professional_referral:
+  # 自动转介条件
+  auto_referral_conditions:
+    - "suicide_crisis"
+    - "self_harm_crisis"
+    - "severe_depression"
+  
+  # 转介资源
+  referral_resources:
+    - type: "emergency"
+      name: "紧急医疗服务"
+      contact: "120"
+      description: "生命危险时立即拨打"
+    
+    - type: "crisis_intervention"
+      name: "心理危机干预中心"
+      contact: "400-161-9995"
+      description: "专业心理危机干预"
+    
+    - type: "counseling"
+      name: "青少年心理咨询"
+      contact: "12355"
+      description: "青少年专业心理咨询"
+
+# 隐私和安全配置
+privacy:
+  # 数据加密
+  encrypt_sensitive_data: true
+  
+  # 数据保留期限（天）
+  data_retention_days: 30
+  
+  # 匿名化处理
+  anonymize_data: true
+  
+  # 家长通知设置
+  parent_notification:
+    enabled: false
+    # 触发通知的风险等级
+    trigger_risk_levels: ["critical"]
+
+# 监控和统计配置
+monitoring:
+  # 启用统计收集
+  enable_statistics: true
+  
+  # 统计报告频率（小时）
+  report_frequency: 24
+  
+  # 异常检测
+  anomaly_detection:
+    enabled: true
+    # 异常阈值
+    thresholds:
+      high_risk_conversations: 5  # 每小时高风险对话数量
+      crisis_interventions: 2     # 每小时危机干预次数
+
+# 个性化配置
+personalization:
+  # 根据用户档案调整响应
+  adaptive_responses: true
+  
+  # 学习用户偏好
+  learn_preferences: true
+  
+  # 个性化建议
+  personalized_suggestions: true
+
+# 多语言支持
+language:
+  # 默认语言
+  default: "zh-CN"
+  
+  # 支持的语言
+  supported: ["zh-CN", "en-US"]
+  
+  # 自动语言检测
+  auto_detect: true

@@ -1,0 +1,27 @@
+{
+  "user_id": "test_user_3",
+  "last_updated": "2025-11-14T11:30:48.586186",
+  "record_count": 2,
+  "records": [
+    {
+      "ts": "2025-11-14T11:25:05.459858",
+      "content": "不想活了",
+      "matched": {
+        "keyword": "不想活了",
+        "severity": 3
+      },
+      "timestamp": "2025-11-14T11:25:05.461192",
+      "record_id": "test_user_3_0_1763090705.461192"
+    },
+    {
+      "ts": "2025-11-14T11:30:48.583691",
+      "content": "不想活了",
+      "matched": {
+        "keyword": "不想活了",
+        "severity": 3
+      },
+      "timestamp": "2025-11-14T11:30:48.586186",
+      "record_id": "test_user_3_1_1763091048.586186"
+    }
+  ]
+}

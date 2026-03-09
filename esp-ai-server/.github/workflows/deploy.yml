@@ -1,0 +1,56 @@
+# 部署工作流 - 自动部署到生产环境
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '部署环境'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    name: 部署到 ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 设置SSH
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    
+    - name: 部署到服务器
+      env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      run: |
+        ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+          cd $DEPLOY_PATH
+          git pull origin main
+          docker-compose -f docker/docker-compose.yml down
+          docker-compose -f docker/docker-compose.yml up -d --build
+          docker-compose -f docker/docker-compose.yml logs --tail=50
+        EOF
+    
+    - name: 健康检查
+      run: |
+        sleep 10
+        curl -f http://${{ secrets.SERVER_HOST }}:8080/api/health || exit 1
+    
+    - name: 发送通知
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        text: '部署到 ${{ github.event.inputs.environment }} 环境'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}

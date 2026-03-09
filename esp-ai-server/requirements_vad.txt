@@ -1,0 +1,15 @@
+# VAD服务依赖
+# WebRTC VAD语音活动检测服务所需的Python包
+
+# 核心依赖
+numpy>=1.20.0          # 音频数据处理和特征提取
+webrtcvad>=2.0.10      # WebRTC VAD核心库
+
+# 可选依赖（用于高级音频处理）
+scipy>=1.7.0           # 科学计算，音频信号处理
+librosa>=0.8.0         # 音频分析库（可选，用于更复杂的特征提取）
+
+# 安装说明：
+# 1. Windows用户可能需要安装Visual C++ Build Tools
+# 2. 或者使用conda安装：conda install -c conda-forge webrtcvad
+# 3. 如果编译失败，可以尝试使用预编译的wheel文件

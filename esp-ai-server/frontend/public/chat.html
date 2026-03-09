@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>心灵小屋 - 你的私密陪伴空间</title>
+    <link rel="stylesheet" href="../src/css/main.css">
+    <link rel="stylesheet" href="../src/css/chat.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部栏 -->
+        <header class="header">
+            <div class="header-content">
+                <!-- 当前角色头像和信息 -->
+                <div class="avatar-container">
+                    <div class="avatar" id="characterAvatar">
+                        <span class="avatar-emoji">🌸</span>
+                    </div>
+                    <span class="status-indicator" id="statusIndicator"></span>
+                </div>
+                <div class="header-info">
+                    <h1 class="title" id="characterName">小暖</h1>
+                    <p class="subtitle" id="statusText">连接中...</p>
+                </div>
+            </div>
+            
+            <!-- 功能按钮 -->
+            <div class="header-buttons">
+                <!-- 聊天记录功能已隐藏，但后端继续保存数据 -->
+                <!-- <button class="btn-icon" id="historyBtn" title="聊天记录">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </button> -->
+                <button class="btn-icon" id="moodBtn" title="今日心情">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" id="diaryBtn" title="心情日记">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" id="settingsBtn" title="设置">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6M5 5l4 4m6 6l4 4M1 12h6m6 0h6M5 19l4-4m6-6l4-4"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 聊天区域 -->
+        <main class="chat-container" id="chatContainer">
+            <!-- 欢迎界面（首次使用）-->
+            <div class="welcome-screen" id="welcomeScreen" style="display: none;">
+                <div class="welcome-content">
+                    <div class="welcome-icon">💙</div>
+                    <h2>欢迎来到心灵小屋</h2>
+                    <p>这里是你的私密空间，可以和AI小伙伴分享心情、记录日记、放松心情</p>
+                    <p class="welcome-hint">选择一个你喜欢的小伙伴开始吧！</p>
+                    <button class="btn-primary" id="startChatBtn">开始聊天</button>
+                </div>
+            </div>
+            
+            <!-- 消息列表 -->
+            <div class="messages" id="messages">
+                <!-- 消息将动态添加到这里 -->
+            </div>
+        </main>
+
+        <!-- 输入区域 -->
+        <footer class="input-container">
+            <!-- 快捷功能栏 -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" id="storyBtn" title="睡前故事">
+                    <span>🌙</span>
+                    <span class="quick-action-label">故事</span>
+                </button>
+                <button class="quick-action-btn" id="treeHoleBtn" title="树洞模式">
+                    <span>🌳</span>
+                    <span class="quick-action-label">树洞</span>
+                </button>
+                <button class="quick-action-btn" id="switchCharacterBtn" title="切换角色">
+                    <span>✨</span>
+                    <span class="quick-action-label">换个人</span>
+                </button>
+            </div>
+            
+            <!-- 树洞模式提示 -->
+            <div class="tree-hole-notice" id="treeHoleNotice" style="display: none;">
+                <span>🌳 树洞模式已开启 - 这是属于你的专属空间，放心倾诉吧</span>
+            </div>
+            
+            <!-- 状态栏 -->
+            <div class="status-bar" id="statusBar"></div>
+            
+            <!-- 输入框 -->
+            <div class="input-wrapper">
+                <textarea 
+                    class="message-input" 
+                    id="messageInput" 
+                    placeholder="说说你的心情..." 
+                    rows="1"
+                    disabled
+                ></textarea>
+                
+                <button class="btn-voice record" id="recordBtn" disabled title="按住说话">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </button>
+                
+                <button class="btn-send" id="sendBtn" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==================== 弹窗组件 ==================== -->
+    
+    <!-- 角色选择弹窗 -->
+    <div class="modal" id="characterModal">
+        <div class="modal-content character-selector">
+            <div class="modal-header">
+                <h3>选择你的AI小伙伴</h3>
+                <button class="btn-close" onclick="closeModal('characterModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="character-grid" id="characterGrid">
+                    <!-- 角色卡片将动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 心情签到弹窗 -->
+    <div class="modal" id="moodModal">
+        <div class="modal-content mood-checkin">
+            <div class="modal-header">
+                <h3>今日心情签到</h3>
+                <button class="btn-close" onclick="closeModal('moodModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="mood-date" id="moodDate"></div>
+                <div class="mood-selector">
+                    <div class="mood-label">今天感觉怎么样？</div>
+                    <div class="mood-grid" id="moodGrid">
+                        <!-- 情绪按钮将动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 情绪强度 -->
+                <div class="mood-intensity" id="moodIntensitySection" style="display: none;">
+                    <div class="mood-label">这种感觉有多强烈？</div>
+                    <div class="intensity-slider-wrapper">
+                        <div class="intensity-labels">
+                            <span>轻微</span>
+                            <span>一般</span>
+                            <span>强烈</span>
+                        </div>
+                        <input type="range" min="1" max="5" value="3" id="intensitySlider" class="intensity-slider">
+                        <div class="intensity-value" id="intensityValue">3</div>
+                    </div>
+                </div>
+                
+                <!-- 心情备注 -->
+                <div class="mood-note" id="moodNoteSection" style="display: none;">
+                    <div class="mood-label">想说点什么吗？（可选）</div>
+                    <textarea id="moodNoteInput" placeholder="记录此刻的想法..." maxlength="200"></textarea>
+                    <div class="char-count"><span id="noteCharCount">0</span>/200</div>
+                </div>
+                
+                <!-- 确认按钮 -->
+                <button class="btn-primary btn-block" id="confirmMoodBtn" disabled>确认签到</button>
+                
+                <!-- 历史心情统计 -->
+                <div class="mood-stats" id="moodStats" style="display: none;">
+                    <div class="stats-header">最近7天心情</div>
+                    <div class="stats-chart" id="moodChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 日记查看弹窗 -->
+    <div class="modal" id="diaryModal">
+        <div class="modal-content diary-viewer">
+            <div class="modal-header">
+                <h3>心情日记</h3>
+                <button class="btn-close" onclick="closeModal('diaryModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="diary-actions">
+                    <button class="btn-secondary" id="generateDiaryBtn">生成今日日记</button>
+                </div>
+                <div class="diary-list" id="diaryList">
+                    <!-- 日记列表将动态生成 -->
+                </div>
+                <div class="diary-detail" id="diaryDetail" style="display: none;">
+                    <button class="btn-back" id="backToDiaryList">← 返回</button>
+                    <div class="diary-content-wrapper" id="diaryContentWrapper">
+                        <!-- 日记详细内容 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 睡前故事弹窗 -->
+    <div class="modal" id="storyModal">
+        <div class="modal-content story-viewer">
+            <div class="modal-header">
+                <h3>🌙 睡前故事</h3>
+                <button class="btn-close" onclick="closeModal('storyModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <!-- 故事类型选择 -->
+                <div class="story-options">
+                    <div class="story-option-label">选择故事类型：</div>
+                    <div class="story-type-selector">
+                        <button class="story-type-btn active" data-type="preset">
+                            <span class="story-type-icon">📚</span>
+                            <span class="story-type-name">精选故事</span>
+                        </button>
+                        <button class="story-type-btn" data-type="generated">
+                            <span class="story-type-icon">✨</span>
+                            <span class="story-type-name">创作新故事</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 主题选择（仅在生成新故事时显示）-->
+                <div class="story-themes" id="storyThemes" style="display: none;">
+                    <div class="story-option-label">选择故事主题：</div>
+                    <div class="theme-grid" id="themeGrid">
+                        <!-- 主题按钮将动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 获取故事按钮 -->
+                <button class="btn-primary btn-block btn-get-story" id="getStoryBtn">
+                    <span>🌙</span>
+                    <span>获取睡前故事</span>
+                </button>
+                
+                <!-- 故事内容显示区域 -->
+                <div class="story-content-area" id="storyContentArea" style="display: none;">
+                    <div class="story-header">
+                        <h4 class="story-title" id="storyTitle"></h4>
+                        <div class="story-meta">
+                            <span class="story-character" id="storyCharacter"></span>
+                            <span class="story-type-badge" id="storyTypeBadge"></span>
+                        </div>
+                    </div>
+                    <div class="story-body">
+                        <div class="story-text" id="storyText"></div>
+                    </div>
+                    <div class="story-actions">
+                        <button class="btn-secondary" id="readAgainBtn">再听一遍</button>
+                        <button class="btn-secondary" id="getAnotherStoryBtn">换一个故事</button>
+                    </div>
+                </div>
+                
+                <!-- 加载提示 -->
+                <div class="story-loading" id="storyLoading" style="display: none;">
+                    <div class="loading-spinner-small"></div>
+                    <div class="loading-text">正在准备睡前故事...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 设置弹窗 -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content settings-panel">
+            <div class="modal-header">
+                <h3>设置</h3>
+                <button class="btn-close" onclick="closeModal('settingsModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="setting-icon">🔊</span>
+                            <span>语音回复</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="voiceModeToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="setting-icon">⏰</span>
+                            <span>主动对话</span>
+                            <p class="setting-desc">AI会在设定时间主动找你聊天</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="proactiveChatToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item" id="proactiveChatTimeSection">
+                        <div class="setting-label">
+                            <span class="setting-icon">🕐</span>
+                            <span>主动对话时间</span>
+                        </div>
+                        <input type="time" id="proactiveChatTime" value="20:00" class="time-input">
+                    </div>
+                </div>
+                
+                <!-- 个人信息设置 -->
+                <div class="settings-section">
+                    <h4>👤 个人信息</h4>
+                    <div class="profile-info">
+                        <div class="profile-item">
+                            <label class="profile-label">
+                                <span class="profile-icon">✨</span>
+                                <span>昵称</span>
+                            </label>
+                            <input type="text" id="profileNickname" class="profile-input" placeholder="输入你的昵称" maxlength="20">
+                        </div>
+                        
+                        <div class="profile-item">
+                            <label class="profile-label">
+                                <span class="profile-icon">🎂</span>
+                                <span>生日</span>
+                            </label>
+                            <input type="date" id="profileBirthday" class="profile-input">
+                        </div>
+                        
+                        <div class="profile-item">
+                            <label class="profile-label">
+                                <span class="profile-icon">💖</span>
+                                <span>爱好</span>
+                            </label>
+                            <input type="text" id="profileHobby" class="profile-input" placeholder="例如：看书、运动、音乐" maxlength="50">
+                        </div>
+                        
+                        <div class="profile-item">
+                            <label class="profile-label">
+                                <span class="profile-icon">💼</span>
+                                <span>职业/学校</span>
+                            </label>
+                            <input type="text" id="profileOccupation" class="profile-input" placeholder="例如：学生、程序员" maxlength="30">
+                        </div>
+                        
+                        <div class="profile-item">
+                            <label class="profile-label">
+                                <span class="profile-icon">📍</span>
+                                <span>所在城市</span>
+                            </label>
+                            <input type="text" id="profileCity" class="profile-input" placeholder="例如：北京" maxlength="20">
+                        </div>
+                        
+                        <div class="profile-item">
+                            <label class="profile-label">
+                                <span class="profile-icon">📝</span>
+                                <span>个性签名</span>
+                            </label>
+                            <textarea id="profileBio" class="profile-textarea" placeholder="写点关于自己的简介..." maxlength="100" rows="3"></textarea>
+                        </div>
+                        
+                        <button class="btn-primary btn-block" id="saveProfileBtn">保存个人信息</button>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h4>关于</h4>
+                    <div class="about-info">
+                        <p>💙 心灵小屋 v1.0</p>
+                        <p class="about-desc">一个安全、私密、温暖的AI陪伴空间</p>
+                        <p class="about-note">⚠️ 本系统仅提供情感支持，不替代专业心理咨询</p>
+                    </div>
+                </div>
+                
+                <!-- 退出登录 -->
+                <div class="settings-section">
+                    <button class="btn-danger btn-block" id="logoutBtn">退出登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天记录侧边栏 - 已隐藏，后端继续保存数据 -->
+    <!-- <div class="history-sidebar" id="historySidebar">
+        <div class="sidebar-header">
+            <h3>聊天记录</h3>
+            <button class="btn-close" onclick="document.getElementById('historySidebar').classList.remove('show')">×</button>
+        </div>
+        <div class="sidebar-search">
+            <input type="text" id="historySearch" placeholder="搜索聊天记录..." class="search-input">
+        </div>
+        <div class="sidebar-content" id="historyContent">
+            <div class="loading">加载中...</div>
+        </div>
+    </div> -->
+
+    <!-- Toast 提示容器 -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- 加载提示 -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">加载中...</div>
+    </div>
+
+    <!-- 脚本 -->
+    <script src="../config.js"></script>
+    <script src="../src/js/utils.js"></script>
+    <script src="../src/js/audio.js?bust=1731484637000"></script>
+    <script src="../src/js/auth.js?bust=1731484637000"></script>
+    <script src="../src/js/chat.js?bust=1731484637000"></script>
+    <script src="../src/js/teen-features.js?bust=1731484637000"></script>
+    <script src="../src/js/timestamp-patch.js?bust=1731484637000"></script>
+    
+    <script>
+        // 全局函数：关闭模态框
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // 全局函数：打开模态框
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>

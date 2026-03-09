@@ -1,0 +1,16 @@
+{
+  "user_id": "final_test_user",
+  "last_updated": "2025-11-14T11:31:54.253082",
+  "point_count": 1,
+  "points": [
+    {
+      "ts": "2025-11-14T11:31:54.253082",
+      "raw": "我今天很开心",
+      "score": {
+        "label": "开心",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-14T11:31:54.253082"
+    }
+  ]
+}

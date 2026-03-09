@@ -1,0 +1,25 @@
+{
+  "user_id": "test_user_1",
+  "last_updated": "2025-11-14T11:30:42.665089",
+  "point_count": 2,
+  "points": [
+    {
+      "ts": "2025-11-14T11:24:59.786701",
+      "raw": "我今天心情不好",
+      "score": {
+        "label": "sadness",
+        "intensity": 6
+      },
+      "timestamp": "2025-11-14T11:24:59.786701"
+    },
+    {
+      "ts": "2025-11-14T11:30:42.663578",
+      "raw": "我今天心情不好",
+      "score": {
+        "label": "sadness",
+        "intensity": 6
+      },
+      "timestamp": "2025-11-14T11:30:42.665089"
+    }
+  ]
+}

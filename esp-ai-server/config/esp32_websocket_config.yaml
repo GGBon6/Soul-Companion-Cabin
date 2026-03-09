@@ -1,0 +1,270 @@
+# ESP32 WebSocket集成模块配置
+# ESP32 WebSocket Integration Module Configuration
+
+# WebSocket服务器配置
+websocket:
+  # 服务器设置
+  server:
+    host: "0.0.0.0"
+    port: 8766
+    max_connections: 1000
+    
+  # 认证配置
+  auth:
+    enabled: false
+    jwt_secret: "your_jwt_secret_key_here"
+    token_expire: 3600  # 1小时
+    device_whitelist: []  # 设备白名单，为空表示不限制
+    
+  # 连接配置
+  connection:
+    timeout: 300  # 5分钟连接超时
+    heartbeat_interval: 30  # 30秒心跳间隔
+    max_message_size: 1048576  # 1MB最大消息大小
+    
+  # 消息处理配置
+  message:
+    max_queue_size: 1000
+    processing_timeout: 30
+    retry_attempts: 3
+    
+  # 性能配置
+  performance:
+    max_workers: 10
+    enable_compression: true
+    buffer_size: 8192
+
+# ESP32设备配置
+esp32:
+  # 设备默认配置
+  device:
+    default_audio_format: "opus"
+    default_sample_rate: 16000
+    default_channels: 1
+    default_frame_duration: 60  # 毫秒
+    
+  # 音频处理配置
+  audio:
+    # 支持的音频格式
+    supported_formats: ["opus", "pcm", "wav"]
+    # 支持的采样率
+    supported_sample_rates: [8000, 16000, 24000, 44100, 48000]
+    # 帧长度选项（毫秒）
+    frame_durations: [20, 40, 60]
+    # 音频质量评估
+    quality_assessment:
+      enabled: true
+      min_quality_score: 0.5
+      
+  # 协议配置
+  protocol:
+    # 支持的协议版本
+    supported_versions: ["1.0", "2.0"]
+    # 默认协议版本
+    default_version: "2.0"
+    # 二进制协议配置
+    binary_protocol:
+      version: 2
+      byte_order: "little"  # 小端字节序，匹配ESP32
+      header_size: 16
+      max_payload_size: 1048576
+
+# 会话管理配置
+session:
+  # 会话设置
+  session_timeout: 1800  # 30分钟会话超时
+  max_sessions: 10000
+  cleanup_interval: 300  # 5分钟清理间隔
+  auto_save: true
+  
+  # 对话历史配置
+  conversation:
+    max_history_length: 50
+    save_to_database: true
+    compress_history: false
+    
+  # 用户档案配置
+  user_profile:
+    enable_profile: true
+    auto_create: true
+    profile_fields: ["age", "grade", "concerns", "preferences"]
+    
+  # 持久化配置
+  persistence:
+    enabled: true
+    save_interval: 60  # 秒
+    compress: true
+
+# 消息路由配置
+message_router:
+  # 处理器配置
+  handlers:
+    hello:
+      enabled: true
+      timeout: 20  # Hello消息超时时间
+      
+    audio:
+      enabled: true
+      max_audio_size: 1048576  # 1MB
+      quality_check: true
+      
+    text:
+      enabled: true
+      max_text_length: 10000
+      
+    control:
+      enabled: true
+      allowed_commands: ["stop", "pause", "resume", "status", "reset"]
+      
+    status:
+      enabled: true
+      include_sensitive_info: false
+  
+  # 优先级配置
+  priority:
+    emergency: 5
+    urgent: 4
+    high: 3
+    normal: 2
+    low: 1
+
+# 服务集成配置
+services:
+  # ASR服务配置
+  asr:
+    enabled: true
+    service_name: "esp32_asr_integration"
+    timeout: 30
+    retry_attempts: 2
+    
+  # TTS服务配置
+  tts:
+    enabled: true
+    service_name: "esp32_tts_integration"
+    timeout: 30
+    audio_format: "opus"
+    # 分批发送配置（解决ESP32内存问题）
+    batch_sending:
+      enabled: true
+      max_frames_per_batch: 5
+      batch_delay: 0.05  # 50ms
+    
+  # 意图识别配置
+  intent:
+    enabled: true
+    service_name: "esp32_intent_processor"
+    timeout: 10
+    # 青少年心理意图识别
+    psychology_intent:
+      enabled: true
+      crisis_detection: true
+      emotional_analysis: true
+      
+  # 语音交互协调器配置
+  speech_coordinator:
+    enabled: true
+    service_name: "esp32_speech_coordinator"
+    timeout: 60
+    
+  # 音频格式转换器配置
+  audio_converter:
+    enabled: true
+    service_name: "esp32_audio_converter"
+    cache_converted_audio: true
+
+# 监控和统计配置
+monitoring:
+  # 统计收集
+  statistics:
+    enabled: true
+    collection_interval: 60  # 秒
+    retention_days: 7
+    
+  # 性能监控
+  performance:
+    enabled: true
+    response_time_tracking: true
+    memory_usage_tracking: true
+    connection_tracking: true
+    
+  # 日志配置
+  logging:
+    level: "INFO"
+    include_device_id: true
+    include_session_id: true
+    max_log_size: "100MB"
+    backup_count: 5
+    
+  # 告警配置
+  alerts:
+    enabled: false
+    high_error_rate_threshold: 0.1  # 10%
+    high_response_time_threshold: 5.0  # 5秒
+    low_connection_success_rate: 0.9  # 90%
+
+# 安全配置
+security:
+  # 连接安全
+  connection:
+    rate_limiting:
+      enabled: true
+      max_connections_per_ip: 10
+      max_messages_per_minute: 100
+      
+    # DDoS防护
+    ddos_protection:
+      enabled: true
+      max_connection_rate: 100  # 每分钟最大连接数
+      blacklist_duration: 300  # 5分钟黑名单时间
+      
+  # 数据安全
+  data:
+    encrypt_sensitive_data: true
+    anonymize_logs: false
+    data_retention_days: 30
+    
+  # 访问控制
+  access_control:
+    ip_whitelist: []  # IP白名单，为空表示不限制
+    ip_blacklist: []  # IP黑名单
+    geo_blocking: false
+
+# 错误处理和恢复配置
+error_handling:
+  # 重试配置
+  retry:
+    max_attempts: 3
+    backoff_factor: 2.0
+    max_delay: 30.0
+    
+  # 降级配置
+  fallback:
+    enabled: true
+    fallback_responses: true
+    fallback_services: true
+    
+  # 错误报告
+  error_reporting:
+    enabled: true
+    include_stack_trace: false
+    max_error_details: 1000
+
+# 开发和调试配置
+development:
+  # 调试模式
+  debug:
+    enabled: false
+    verbose_logging: false
+    include_raw_messages: false
+    
+  # 测试配置
+  testing:
+    mock_services: false
+    simulate_errors: false
+    test_device_ids: []
+    
+  # 性能分析
+  profiling:
+    enabled: false
+    profile_requests: false
+    profile_memory: false

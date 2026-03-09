@@ -1,0 +1,30 @@
+[
+  {
+    "mood": "happy",
+    "emoji": "😊",
+    "timestamp": "2025-11-07 14:12:29",
+    "note": "",
+    "intensity": 1
+  },
+  {
+    "mood": "happy",
+    "emoji": "😊",
+    "timestamp": "2025-11-07 14:18:40",
+    "note": "",
+    "intensity": 3
+  },
+  {
+    "mood": "happy",
+    "emoji": "😊",
+    "timestamp": "2025-11-07 17:41:28",
+    "note": "",
+    "intensity": 3
+  },
+  {
+    "mood": "happy",
+    "emoji": "😊",
+    "timestamp": "2025-11-10 14:18:16",
+    "note": "",
+    "intensity": 5
+  }
+]

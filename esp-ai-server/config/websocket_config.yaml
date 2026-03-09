@@ -1,0 +1,63 @@
+# WebSocket服务器配置
+# WebSocket Server Configuration
+
+# Web客户端服务器配置
+web_server:
+  # 端口号 (默认使用 settings.PORT)
+  port: null  # 如果为null，使用settings.PORT
+  
+  # 最大消息大小 (10MB)
+  max_size: 10485760
+  
+  # 消息队列大小
+  max_queue: 32
+  
+  # 心跳间隔 (秒)
+  ping_interval: 20
+  
+  # 心跳超时 (秒)
+  ping_timeout: 10
+
+# ESP32设备服务器配置
+esp32_server:
+  # 端口号 (默认使用 settings.PORT + 1)
+  port: null  # 如果为null，使用settings.PORT + 1
+  
+  # 最大消息大小 (10MB，支持大音频文件)
+  max_size: 10485760
+  
+  # 消息队列大小
+  max_queue: 32
+  
+  # 心跳间隔 (秒，ESP32设备可能需要更长间隔)
+  ping_interval: 30
+  
+  # 心跳超时 (秒)
+  ping_timeout: 10
+  
+  # Hello消息超时 (秒)
+  hello_timeout: 10
+
+# 设备检测配置
+device_detection:
+  # 支持的ESP32 User-Agent关键词
+  esp32_user_agents:
+    - "esp32"
+    - "arduino"
+    - "espressif"
+  
+  # 支持的设备类型头
+  device_type_header: "X-Device-Type"
+  device_id_header: "X-Device-ID"
+  client_id_header: "X-Client-ID"
+
+# 日志配置
+logging:
+  # 是否记录详细的连接信息
+  log_connections: true
+  
+  # 是否记录消息内容 (调试用)
+  log_messages: false
+  
+  # 是否记录设备检测过程
+  log_device_detection: true

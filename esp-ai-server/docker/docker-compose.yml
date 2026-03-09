@@ -1,0 +1,90 @@
+# 小智AI服务 - Docker Compose配置
+# Xiaozhi AI Service - Docker Compose Configuration
+
+version: '3.8'
+
+services:
+  xiaozhi-ai:
+    # 服务名称
+    container_name: xiaozhi-ai-service
+    
+    # 构建配置
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    
+    # 镜像名称
+    image: xiaozhi-ai-service:2.0.0
+    
+    # 端口映射
+    ports:
+      - "8080:8080"   # HTTP API和OTA服务
+      - "8766:8766"   # WebSocket服务
+    
+    # 环境变量文件
+    env_file:
+      - ../.env
+    
+    # 环境变量（可覆盖.env中的配置）
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=False
+      - HOST=0.0.0.0
+      - PORT=8766
+      - HTTP_PORT=8080
+    
+    # 数据卷挂载
+    volumes:
+      # 数据持久化
+      - ../data:/app/data
+      # 日志持久化
+      - ../logs:/app/logs
+      # 配置文件（可选）
+      # - ../custom_config.py:/app/app/core/custom_config.py
+    
+    # 重启策略
+    restart: unless-stopped
+    
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    # 健康检查
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s = socket.socket(); s.connect(('localhost', 8766)); s.close()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # 日志配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # 网络配置
+    networks:
+      - xiaozhi-network
+
+# 网络定义
+networks:
+  xiaozhi-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# 数据卷定义（可选，如果不想使用本地目录）
+# volumes:
+#   xiaozhi-data:
+#     driver: local
+#   xiaozhi-logs:
+#     driver: local

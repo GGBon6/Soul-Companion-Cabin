@@ -1,0 +1,71 @@
+{
+  "user_id": "test_user_new_arch",
+  "last_updated": "2025-11-14T09:02:50.624856",
+  "point_count": 8,
+  "points": [
+    {
+      "timestamp": "2025-11-14T09:01:25.450591",
+      "mood": "happy",
+      "emoji": "😊",
+      "note": "测试开心心情",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-14T09:01:25.451096",
+      "mood": "excited",
+      "emoji": "🤩",
+      "note": "测试兴奋心情",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-14T09:01:48.328087",
+      "mood": "happy",
+      "emoji": "😊",
+      "note": "测试开心心情",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-14T09:01:48.329251",
+      "mood": "excited",
+      "emoji": "🤩",
+      "note": "测试兴奋心情",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-14T09:02:23.979351",
+      "mood": "happy",
+      "emoji": "😊",
+      "note": "测试开心心情",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-14T09:02:23.980424",
+      "mood": "excited",
+      "emoji": "🤩",
+      "note": "测试兴奋心情",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-14T09:02:50.615263",
+      "mood": "happy",
+      "emoji": "😊",
+      "note": "测试开心心情",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-14T09:02:50.616793",
+      "mood": "excited",
+      "emoji": "🤩",
+      "note": "测试兴奋心情",
+      "intensity": 3,
+      "type": "check_in"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+# 依赖审查工作流
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: 依赖安全审查
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 依赖审查
+      uses: actions/dependency-review-action@v3
+      with:
+        fail-on-severity: moderate

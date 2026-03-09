@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心灵小屋 - 登录</title>
+    <link rel="stylesheet" href="../src/css/main.css">
+    <link rel="stylesheet" href="../src/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo" style="font-size: 60px;">💙</div>
+                <h1>欢迎来到心灵小屋</h1>
+                <p class="subtitle">温暖陪伴，守护你的每一个心情</p>
+            </div>
+
+            <!-- 登录表单 -->
+            <form id="loginForm" class="auth-form">
+                <h2>登录</h2>
+                <div class="form-group">
+                    <label for="login-username">用户名</label>
+                    <input type="text" id="login-username" placeholder="请输入用户名" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">密码</label>
+                    <input type="password" id="login-password" placeholder="请输入密码" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-primary">登录</button>
+                <p class="switch-form">
+                    还没有账号？<a href="#" id="showRegister">立即注册</a>
+                </p>
+                <p class="switch-form">
+                    <a href="reset-password.html">忘记密码？</a>
+                </p>
+                <p class="switch-form">
+                    <a href="#" id="guestLogin">游客模式登录</a>
+                </p>
+            </form>
+
+            <!-- 注册表单 -->
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <h2>注册</h2>
+                <div class="form-group">
+                    <label for="register-username">用户名</label>
+                    <input type="text" id="register-username" placeholder="至少3个字符" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">密码</label>
+                    <input type="password" id="register-password" placeholder="至少6个字符" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="register-nickname">昵称（可选）</label>
+                    <input type="text" id="register-nickname" placeholder="AI小伙伴会这样称呼你" autocomplete="nickname">
+                </div>
+                <button type="submit" class="btn-primary">注册</button>
+                <p class="switch-form">
+                    已有账号？<a href="#" id="showLogin">立即登录</a>
+                </p>
+            </form>
+
+            <!-- 消息提示 -->
+            <div id="messageBox" class="message-box"></div>
+        </div>
+    </div>
+
+    <!-- 新模块化架构脚本 -->
+    <script src="../config.js"></script>
+    <script src="../src/js/utils.js"></script>
+    <script src="../src/js/auth.js"></script>
+    <script>
+        // 登录页面逻辑
+        class LoginPage {
+            constructor() {
+                this.authManager = new AuthManager();
+                this.initElements();
+                this.bindEvents();
+                this.checkExistingLogin();
+            }
+            
+            initElements() {
+                this.loginForm = document.getElementById('loginForm');
+                this.registerForm = document.getElementById('registerForm');
+                this.messageBox = document.getElementById('messageBox');
+                
+                this.loginUsername = document.getElementById('login-username');
+                this.loginPassword = document.getElementById('login-password');
+                
+                this.registerUsername = document.getElementById('register-username');
+                this.registerPassword = document.getElementById('register-password');
+                this.registerNickname = document.getElementById('register-nickname');
+                
+                this.showRegisterLink = document.getElementById('showRegister');
+                this.showLoginLink = document.getElementById('showLogin');
+                this.guestLoginLink = document.getElementById('guestLogin');
+            }
+            
+            bindEvents() {
+                this.showRegisterLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchToRegister();
+                });
+                
+                this.showLoginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchToLogin();
+                });
+                
+                this.guestLoginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.guestLogin();
+                });
+                
+                this.loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+                
+                this.registerForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleRegister();
+                });
+            }
+            
+            checkExistingLogin() {
+                if (this.authManager.isLoggedIn()) {
+                    window.location.href = 'chat.html';
+                }
+            }
+            
+            switchToRegister() {
+                this.loginForm.style.display = 'none';
+                this.registerForm.style.display = 'block';
+                this.hideMessage();
+            }
+            
+            switchToLogin() {
+                this.registerForm.style.display = 'none';
+                this.loginForm.style.display = 'block';
+                this.hideMessage();
+            }
+            
+            showMessage(message, type = 'info') {
+                this.messageBox.textContent = message;
+                this.messageBox.className = `message-box ${type}`;
+                this.messageBox.style.display = 'block';
+            }
+            
+            hideMessage() {
+                this.messageBox.style.display = 'none';
+            }
+            
+            async handleLogin() {
+                const username = this.loginUsername.value.trim();
+                const password = this.loginPassword.value.trim();
+                
+                this.showMessage('正在登录...', 'info');
+                
+                try {
+                    const userInfo = await this.authManager.login(username, password);
+                    this.showMessage('登录成功！正在跳转...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'chat.html';
+                    }, 1000);
+                } catch (error) {
+                    this.showMessage(error.message, 'error');
+                }
+            }
+            
+            async handleRegister() {
+                const username = this.registerUsername.value.trim();
+                const password = this.registerPassword.value.trim();
+                const nickname = this.registerNickname.value.trim();
+                
+                this.showMessage('正在注册...', 'info');
+                
+                try {
+                    const userInfo = await this.authManager.register(username, password, nickname);
+                    this.showMessage('注册成功！正在跳转...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'chat.html';
+                    }, 1000);
+                } catch (error) {
+                    this.showMessage(error.message, 'error');
+                }
+            }
+            
+            guestLogin() {
+                this.showMessage('正在进入游客模式...', 'info');
+                this.authManager.setGuestMode();
+                setTimeout(() => {
+                    window.location.href = 'chat.html';
+                }, 500);
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginPage();
+        });
+    </script>
+</body>
+</html>
+

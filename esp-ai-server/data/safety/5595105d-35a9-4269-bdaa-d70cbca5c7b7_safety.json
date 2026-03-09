@@ -1,0 +1,17 @@
+{
+  "user_id": "5595105d-35a9-4269-bdaa-d70cbca5c7b7",
+  "last_updated": "2025-11-13T17:14:46.990635",
+  "record_count": 1,
+  "records": [
+    {
+      "ts": "2025-11-13T17:14:46.012656",
+      "content": "低自我价值感",
+      "matched": {
+        "keyword": "低自我价值感",
+        "severity": 2
+      },
+      "timestamp": "2025-11-13T17:14:46.990635",
+      "record_id": "5595105d-35a9-4269-bdaa-d70cbca5c7b7_0_1763025286.990635"
+    }
+  ]
+}

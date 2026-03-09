@@ -1,0 +1,234 @@
+# Agent架构配置文件
+# 用于控制ChatAgent和相关智能功能的开关
+
+# ==================== ChatAgent 核心配置 ====================
+chat_agent:
+  # 是否启用ChatAgent模式（总开关）
+  enabled: true
+  
+  # 对话策略配置
+  conversation_strategies:
+    empathy: "共情陪伴"
+    guidance: "引导建议"
+    knowledge: "知识问答"
+    casual: "日常聊天"
+    crisis: "危机干预"
+  
+  # 上下文管理
+  max_context_messages: 10
+  max_user_input_length: 2000
+  
+  # 超时配置
+  default_timeout_s: 15.0
+  max_concurrency: 3
+
+# ==================== 记忆系统配置 ====================
+memory_system:
+  # 是否启用记忆召回
+  enable_memory_recall: true
+  
+  # 是否启用记忆写入
+  enable_memory_write: true
+  
+  # 记忆召回策略
+  recall_policy:
+    min_similarity: 0.3
+    top_k: 5
+    max_return: 3
+    mmr_lambda: 0.7
+    avoid_repeat_hours: 2
+  
+  # 记忆写入门控
+  write_gate_policy:
+    allow_persist: true
+    min_importance: 4
+    require_multi_evidence_for_profile: true
+    evidence_window_days: 7
+
+# ==================== 情绪分析配置 ====================
+emotion_analysis:
+  # 是否启用情绪分析
+  enabled: true
+  
+  # 情绪检测阈值
+  emotion_threshold: 0.5
+  
+  # 情绪强度范围
+  intensity_range: [1, 10]
+  
+  # 负面情绪关键词
+  negative_keywords:
+    - "难过"
+    - "伤心"
+    - "痛苦"
+    - "焦虑"
+    - "害怕"
+    - "愤怒"
+    - "绝望"
+    - "孤独"
+    - "无助"
+  
+  # 正面情绪关键词
+  positive_keywords:
+    - "开心"
+    - "高兴"
+    - "兴奋"
+    - "满足"
+    - "感激"
+    - "幸福"
+    - "快乐"
+    - "愉悦"
+
+# ==================== 风险检测配置 ====================
+risk_detection:
+  # 是否启用风险检测
+  enabled: true
+  
+  # 风险等级定义
+  risk_levels:
+    0: "无风险"
+    1: "轻微风险"
+    2: "中等风险"
+    3: "高风险"
+  
+  # 高风险关键词
+  high_risk_keywords:
+    - "不想活"
+    - "想死"
+    - "自杀"
+    - "结束生命"
+    - "撑不住"
+    - "崩溃"
+    - "活着没意思"
+    - "想要解脱"
+  
+  # 中等风险关键词
+  medium_risk_keywords:
+    - "压力很大"
+    - "很累"
+    - "想逃避"
+    - "没有希望"
+    - "很痛苦"
+    - "受不了"
+  
+  # 风险响应策略
+  risk_response:
+    high_risk:
+      strategy: "crisis"
+      immediate_alert: true
+      contact_emergency: true
+    medium_risk:
+      strategy: "empathy"
+      enhanced_monitoring: true
+    low_risk:
+      strategy: "guidance"
+      gentle_support: true
+
+# ==================== 知识注入配置 ====================
+knowledge_injection:
+  # 是否启用知识注入
+  enabled: true
+  
+  # 知识查询关键词
+  query_keywords:
+    - "是谁"
+    - "什么"
+    - "为什么"
+    - "怎么"
+    - "如何"
+    - "告诉我"
+    - "解释"
+    - "介绍"
+    - "学习"
+    - "了解"
+  
+  # 知识源配置
+  knowledge_sources:
+    - name: "百科知识"
+      enabled: true
+      priority: 1
+    - name: "学科知识"
+      enabled: true
+      priority: 2
+    - name: "生活常识"
+      enabled: true
+      priority: 3
+
+# ==================== 个性化配置 ====================
+personalization:
+  # 是否启用个性化
+  enabled: true
+  
+  # 用户画像更新频率
+  profile_update_frequency: "daily"
+  
+  # 个性化因素权重
+  factors:
+    conversation_history: 0.4
+    emotion_patterns: 0.3
+    interest_preferences: 0.2
+    interaction_style: 0.1
+  
+  # 适应性学习
+  adaptive_learning:
+    enabled: true
+    learning_rate: 0.1
+    adaptation_threshold: 0.7
+
+# ==================== 安全与合规配置 ====================
+safety_compliance:
+  # 内容过滤
+  content_filtering:
+    enabled: true
+    filter_inappropriate: true
+    filter_harmful: true
+  
+  # 隐私保护
+  privacy_protection:
+    anonymize_exports: true
+    data_retention_days: 365
+    secure_storage: true
+  
+  # 审计日志
+  audit_logging:
+    enabled: true
+    log_level: "INFO"
+    retention_days: 90
+
+# ==================== 性能优化配置 ====================
+performance:
+  # 缓存配置
+  caching:
+    enabled: true
+    ttl_seconds: 3600
+    max_cache_size: 1000
+  
+  # 并发控制
+  concurrency:
+    max_concurrent_requests: 10
+    request_timeout_s: 30
+  
+  # 资源限制
+  resource_limits:
+    max_memory_mb: 512
+    max_cpu_percent: 80
+
+# ==================== 开发与调试配置 ====================
+development:
+  # 调试模式
+  debug_mode: false
+  
+  # 详细日志
+  verbose_logging: false
+  
+  # 性能监控
+  performance_monitoring: true
+  
+  # 测试模式
+  test_mode: false
+  
+  # 模拟数据
+  mock_data:
+    enabled: false
+    mock_llm_responses: false
+    mock_memory_data: false

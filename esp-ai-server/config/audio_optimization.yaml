@@ -1,0 +1,63 @@
+# ESP32音频优化配置
+# 用于调整音频播放流畅度和质量
+
+# 音频质量模式配置
+audio_quality_modes:
+  # 流畅模式 - 优先保证播放连续性，适合网络不稳定或ESP32性能较低的情况
+  smooth:
+    max_frames_per_batch: 2    # 每批最多2帧，减少单次传输量
+    batch_delay_ms: 10         # 批次间10ms延迟，接近实时
+    description: "优先流畅播放，最小延迟"
+    
+  # 平衡模式 - 默认设置，平衡流畅度和质量
+  balanced:
+    max_frames_per_batch: 3    # 每批3帧，平衡实时性和质量
+    batch_delay_ms: 20         # 批次间20ms延迟，平衡延迟和稳定性
+    description: "平衡流畅度和质量"
+    
+  # 质量模式 - 优先保证音频质量，适合网络稳定且ESP32性能较好的情况
+  quality:
+    max_frames_per_batch: 5    # 每批5帧，减少网络开销
+    batch_delay_ms: 30         # 批次间30ms延迟，给ESP32更多处理时间
+    description: "优先音频质量，适合稳定网络"
+
+# 音频参数配置
+audio_params:
+  sample_rate: 16000           # 采样率 (Hz) - 统一使用16kHz
+  frame_duration_ms: 40        # 帧时长 (毫秒) - 优化为40ms提高流畅度
+  channels: 1                  # 声道数
+  bit_depth: 16               # 位深度
+  
+# 不同帧长的对比分析
+frame_duration_comparison:
+  # 当前ESP32设置 (可能导致掉帧)
+  current_60ms:
+    frame_size: 960            # 16000 * 60 / 1000 = 960 采样点
+    frame_bytes: 1920          # 960 * 2 = 1920 字节
+    latency: "较高延迟，可能有颗粒感"
+    
+  # 推荐设置 (更流畅)
+  recommended_40ms:
+    frame_size: 640            # 16000 * 40 / 1000 = 640 采样点  
+    frame_bytes: 1280          # 640 * 2 = 1280 字节
+    latency: "较低延迟，更流畅"
+    
+  # 高质量设置 (最流畅但网络开销大)
+  smooth_20ms:
+    frame_size: 320            # 16000 * 20 / 1000 = 320 采样点
+    frame_bytes: 640           # 320 * 2 = 640 字节
+    latency: "最低延迟，最流畅"
+
+# 调试和监控配置
+debug:
+  log_frame_details: false    # 是否记录每帧的详细信息
+  log_timing_info: true       # 是否记录时间信息
+  log_batch_info: true        # 是否记录批次信息
+
+# 性能优化建议
+optimization_tips: |
+  1. 如果音频有掉帧现象，尝试使用 "smooth" 模式
+  2. 如果网络稳定但音质不佳，尝试使用 "quality" 模式
+  3. 可以通过ESP32的Hello消息中添加 "audio_quality_mode" 字段来动态设置
+  4. 监控ESP32的内存使用情况，如果内存不足可能导致掉帧
+  5. 检查ESP32的音频缓冲区大小设置

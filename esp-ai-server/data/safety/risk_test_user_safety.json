@@ -1,0 +1,17 @@
+{
+  "user_id": "risk_test_user",
+  "last_updated": "2025-11-14T11:31:56.433778",
+  "record_count": 1,
+  "records": [
+    {
+      "ts": "2025-11-14T11:31:56.432773",
+      "content": "不想活了",
+      "matched": {
+        "keyword": "不想活了",
+        "severity": 3
+      },
+      "timestamp": "2025-11-14T11:31:56.433778",
+      "record_id": "risk_test_user_0_1763091116.433778"
+    }
+  ]
+}

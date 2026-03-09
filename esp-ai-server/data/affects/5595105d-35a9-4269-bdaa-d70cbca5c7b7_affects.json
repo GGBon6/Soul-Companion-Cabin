@@ -1,0 +1,262 @@
+{
+  "user_id": "5595105d-35a9-4269-bdaa-d70cbca5c7b7",
+  "last_updated": "2025-11-18T17:03:27.840050",
+  "point_count": 29,
+  "points": [
+    {
+      "timestamp": "2025-11-13T15:27:31.764457",
+      "mood": "calm",
+      "emoji": "😌",
+      "note": "",
+      "intensity": 5,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-13T15:27:47.769265",
+      "mood": "calm",
+      "emoji": "😌",
+      "note": "",
+      "intensity": 5,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-13T15:52:43.227522",
+      "mood": "calm",
+      "emoji": "😌",
+      "note": "",
+      "intensity": 5,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-13T15:58:58.214575",
+      "mood": "happy",
+      "emoji": "😊",
+      "note": "",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-13T16:02:10.144868",
+      "mood": "excited",
+      "emoji": "🤩",
+      "note": "",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-13T16:06:45.107810",
+      "mood": "excited",
+      "emoji": "🤩",
+      "note": "",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "timestamp": "2025-11-13T16:09:49.798944",
+      "mood": "confused",
+      "emoji": "😕",
+      "note": "",
+      "intensity": 3,
+      "type": "check_in"
+    },
+    {
+      "ts": "2025-11-13T16:09:49.798944",
+      "mood_id": "confused",
+      "mood_name": "迷茫",
+      "mood_emoji": "😕",
+      "intensity": 3,
+      "note": "",
+      "type": "mood_checkin",
+      "timestamp": "2025-11-13T16:09:49.809302"
+    },
+    {
+      "ts": "2025-11-13T16:44:42.322659",
+      "raw": "今天很开心！",
+      "score": {
+        "label": "开心",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-13T16:44:42.322659"
+    },
+    {
+      "ts": "2025-11-13T16:45:00.018318",
+      "raw": "今天很开心！",
+      "score": {
+        "label": "开心",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-13T16:45:00.018318"
+    },
+    {
+      "ts": "2025-11-13T17:02:40.395994",
+      "raw": "我今天很开心！",
+      "score": {
+        "label": "开心",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-13T17:02:40.397009"
+    },
+    {
+      "ts": "2025-11-13T17:02:57.637301",
+      "raw": "我今天很开心！",
+      "score": {
+        "label": "开心",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-13T17:02:57.637301"
+    },
+    {
+      "ts": "2025-11-13T17:03:49.440553",
+      "raw": "今天数学考了满分，老师当全班的面表扬了我",
+      "score": {
+        "label": "喜悦",
+        "intensity": 9
+      },
+      "timestamp": "2025-11-13T17:03:51.142679"
+    },
+    {
+      "ts": "2025-11-13T17:04:13.548467",
+      "raw": "今天数学考了满分，老师当全班的面表扬了我",
+      "score": {
+        "label": "喜悦",
+        "intensity": 9
+      },
+      "timestamp": "2025-11-13T17:04:14.813387"
+    },
+    {
+      "ts": "2025-11-13T17:14:38.804346",
+      "raw": "老师对我的评价怎么样？",
+      "score": {
+        "label": "焦虑",
+        "intensity": 6
+      },
+      "timestamp": "2025-11-13T17:14:39.881841"
+    },
+    {
+      "ts": "2025-11-13T17:14:46.012656",
+      "raw": "我有什么成就？",
+      "score": {
+        "label": "自我怀疑",
+        "intensity": 6
+      },
+      "timestamp": "2025-11-13T17:14:46.990635"
+    },
+    {
+      "ts": "2025-11-13T17:42:30.923020",
+      "raw": "我今天很开心！",
+      "score": {
+        "label": "开心",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-13T17:42:30.923020"
+    },
+    {
+      "ts": "2025-11-13T17:42:46.003185",
+      "raw": "我今天很开心！",
+      "score": {
+        "label": "开心",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-13T17:42:46.011095"
+    },
+    {
+      "ts": "2025-11-13T17:51:03.642380",
+      "raw": "我放学啦！",
+      "score": {
+        "label": "neutral",
+        "intensity": 3
+      },
+      "timestamp": "2025-11-13T17:51:05.945192"
+    },
+    {
+      "ts": "2025-11-14T08:45:29.137349",
+      "raw": "早上好！",
+      "score": {
+        "label": "positive",
+        "intensity": 5
+      },
+      "timestamp": "2025-11-14T08:45:29.137349"
+    },
+    {
+      "ts": "2025-11-14T08:45:38.538717",
+      "raw": "早上好！",
+      "score": {
+        "label": "positive",
+        "intensity": 5
+      },
+      "timestamp": "2025-11-14T08:45:38.546700"
+    },
+    {
+      "ts": "2025-11-14T12:38:47.680182",
+      "raw": "你是谁呀！",
+      "score": {
+        "label": "困惑",
+        "intensity": 4
+      },
+      "timestamp": "2025-11-14T12:38:47.680182"
+    },
+    {
+      "ts": "2025-11-14T12:38:59.762502",
+      "raw": "你是谁呀！",
+      "score": {
+        "label": "好奇",
+        "intensity": 5
+      },
+      "timestamp": "2025-11-14T12:38:59.771517"
+    },
+    {
+      "timestamp": "2025-11-14T17:12:08.144536",
+      "mood": "excited",
+      "emoji": "🤩",
+      "note": "",
+      "intensity": 5,
+      "type": "check_in"
+    },
+    {
+      "ts": "2025-11-14T17:12:08.146044",
+      "mood_id": "excited",
+      "mood_name": "兴奋",
+      "mood_emoji": "🤩",
+      "intensity": 5,
+      "note": "",
+      "type": "mood_checkin",
+      "timestamp": "2025-11-14T17:12:08.153906"
+    },
+    {
+      "ts": "2025-11-18T17:00:19.043491",
+      "raw": "你好 我马上就要放学了！",
+      "score": {
+        "label": "兴奋",
+        "intensity": 7
+      },
+      "timestamp": "2025-11-18T17:00:19.723603"
+    },
+    {
+      "ts": "2025-11-18T17:00:31.191205",
+      "raw": "你好 我马上就要放学了！",
+      "score": {
+        "label": "兴奋",
+        "intensity": 7
+      },
+      "timestamp": "2025-11-18T17:00:31.926775"
+    },
+    {
+      "ts": "2025-11-18T17:03:19.333516",
+      "raw": "你是小树吗！",
+      "score": {
+        "label": "兴奋",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-18T17:03:19.773687"
+    },
+    {
+      "ts": "2025-11-18T17:03:27.412620",
+      "raw": "你是小树吗！",
+      "score": {
+        "label": "兴奋",
+        "intensity": 8
+      },
+      "timestamp": "2025-11-18T17:03:27.840050"
+    }
+  ]
+}
