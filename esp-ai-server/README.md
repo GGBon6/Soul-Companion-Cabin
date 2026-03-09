@@ -1,15 +1,14 @@
-# 💙 心灵小屋 - 青少年心理健康对话系统
-(Soul Companion Cabin - Youth Mental Health Dialogue System)
+# 💙 心灵小屋 - 网页端 (Soul Companion Cabin - Web Frontend)
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
-![Python](https://img.shields.io/badge/python-3.8+-green.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Javascript](https://img.shields.io/badge/javascript-vanilla-yellow.svg)
 ![License](https://img.shields.io/badge/license-MIT-orange.svg)
 
-**基于大模型与情感计算的青少年心理伴陪伴与危机干预平台**
+**青少年心理健康对话系统的官方网页客户端**
 
-[快速开始](#🚀-快速开始) • [功能特性](#✨-功能特性) • [系统架构](#🏗️-系统架构) • [接入指南](#🔌-接入指南)
+[快速开始](#🚀-快速开始) • [核心功能](#✨-核心功能) • [技术架构](#🏗️-技术架构) • [开发指南](#🛠️-开发指南)
 
 </div>
 
@@ -17,152 +16,101 @@
 
 ## 📖 项目简介
 
-**心灵小屋** 是一个专为青少年设计的智能心理健康对话系统。系统不仅提供日常的陪伴与倾听，还内置了危机干预、情绪分析、记忆系统等专业心理健康辅助功能。支持多种客户端（Web、ESP32硬件设备端）接入，通过WebSocket提供低延迟的实时语音对话体验。
-
-### 🌟 核心理念
-- **专业且温暖**：提供支持性、引导性的陪伴，不作冰冷的机器回答。
-- **隐私保护优先**：具备“树洞模式”设计，敏感对话全方位加密及本地化处理。
-- **多端触达**：无论是在网页端还是通过ESP32智能硬件，都能随时随地获得倾听。
+**心灵小屋 - 网页端** 是配套“心灵小屋”AI 服务端的沉浸式 Web 交互界面。通过简洁、温馨的设计语言，为青少年提供一个私密、安全的心理倾诉空间。该前端采用原生 JavaScript (Vanilla JS) 开发，无需复杂的库依赖，轻量且高效，支持实时语音对话、情绪看板及多样化的心理陪伴功能。
 
 ---
 
-## ✨ 功能特性
+## ✨ 核心功能
 
-### � 丰富的角色陪伴系统
-内置多位个性鲜明的AI伙伴，满足不同场景下的交流需求：
-- **小暖**：温暖贴心的知心大姐姐，擅长共情与倾听。
-- **小橙**：活力四射的阳光小教员，带来正能量与鼓励。
-- **小树**：冷静睿智的树洞倾听者，适合倾吐深藏的秘密。
-- **小智**：充满智慧的全能百科，解答生活与学习上的疑惑。
+- 🎙️ **实时语音对话**：基于 Web Audio API 和 WebSockets，实现高效的音频流式传输。
+- 💬 **沉浸式聊天体验**：温馨的 UI 设计，支持多种 AI 角色切换（小暖、小橙、小树等）。
+- 🔒 **隐私保护**：支持游客模式与加密登录，本地化存储对话偏好。
+- 📊 **青少年专属功能**：内置情绪监控、心理引导及青少年特化交互逻辑。
+- 🎨 **响应式设计**：完美适配桌面浏览器，提供丝滑的视觉过渡效果。
 
-### 🧠 深度情绪与心理干预引擎
-- **实时意图与情绪检测**：多维度情绪检测（支持情感强度分析 1-10级）。
-- **危机干预与转介系统** (Crisis Intervention)：智能识别高风险词汇（如自杀、自残意向），并触发不同的响应策略（如直接给出干预热线 `400-161-9995`、`12355` 等）。
-- **个性化长期记忆** (Memory System)：记录用户的偏好与状态，实现有记忆连贯性的长期陪伴。
+---
 
-### 🛠️ 丰富的核心扩展玩法
-- **心情签到** (Mood Check-in)
-- **情绪日记** (Emotional Diary)
-- **睡前故事** (Bedtime Stories)
-- **知识百科注入** (Knowledge Injection)
+## 🏗️ 技术架构
 
-### 💻 强大的底层支持
-- **WebSocket 实时语音流**：支持 Opus 编解码，适配 ESP32 硬件端极速响应。
-- **AI 核心驱动**：对接阿里云百炼（通义千问大模型）、Paraformer（实时ASR）、CosyVoice（高拟真TTS）。
-- **高可用与分布式支持**：引入 Redis 集群管理、连接池控制、分布式缓存等企业级架构。
+- **核心语言**：原生 HTML5 + CSS3 (现代 CSS 特性) + ES6 JavaScript。
+- **通信协议**：WebSocket 实现全双工实时通信（支持重连机制与心跳检测）。
+- **音频处理**：使用 MediaRecorder 与 Web Audio API 进行音频采集，搭配服务端进行 Opus 编解码。
+- **模块化设计**：逻辑划分为 `auth` (鉴权)、`chat` (聊天控制)、`audio` (音频流) 和 `teen-features` (业务特化) 等独立模块。
 
 ---
 
 ## 🚀 快速开始
 
-### 环境要求
+### 1. 基础配置
 
-- Python 3.8 或以上版本
-- 阿里云 DashScope API 密钥
-- Redis 服务（推荐，如无则回退本地缓存）
+在 `/frontend/config.js` 中配置您的服务端地址：
 
-### 安装与运行步骤
-
-1. **克隆代码并进入项目**
-   ```bash
-   git clone https://github.com/yourusername/esp-ai-server.git
-   cd esp-ai-server
-   ```
-
-2. **安装依赖环境**
-   本项目依赖 `opuslib`（ESP32音频必需），部分系统可能需要前置安装环境库。
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **配置环境变量**
-   ```bash
-   # 复制环境变量模板
-   cp env.example .env
-   ```
-   编辑 `.env` 文件，必须填入核心 AI API Key：
-   ```env
-   DASHSCOPE_API_KEY=your-dashscope-api-key-here
-   LLM_MODEL=qwen3-max
-   ```
-
-4. **启动服务**
-   ```bash
-   python main.py
-   ```
-   启动成功后，控制台会输出如下端口信息：
-   - WebSocket 语音交互端口: `ws://0.0.0.0:8766`
-   - OTA 硬件空中升级服务器: `http://0.0.0.0:8080/ota/`
-
----
-
-## � 接入指南
-
-### 1. Web 客户端接入
-Web项目可以通过 WebSocket 协议实现沉浸式对话（参考项目内的 `frontend` 目录）：
 ```javascript
-const ws = new WebSocket('ws://localhost:8766');
-ws.onopen = () => {
-  ws.send(JSON.stringify({ type: 'text', content: '小暖你好，我今天有点难过。' }));
+// config.js
+const CONFIG = {
+    WEBSOCKET: {
+        // 修改为您的 esp-ai-server 运行地址
+        URL: 'ws://your-server-ip:8766', 
+        RECONNECT_ATTEMPTS: 5
+    },
+    // ... 其他配置项
 };
 ```
 
-### 2. ESP32 硬件设备接入
-为桌面智能硬件（如屏幕音箱）赋予灵魂。
-ESP32 配置指南：
-- 确保硬件烧录了配套固件。
-- 在配网或配置平台中，将 WebSocket 地址指向 `ws://<服务器IP>:8766`。
-- OTA 固件升级地址指向 `http://<服务器IP>:8080/ota/`。
+### 2. 运行项目
+
+由于本项目采用现代浏览器原生支持的模块化 JS，您只需使用任何静态服务器启动 `frontend` 文件夹即可。
+
+**方式一：VS Code 插件 (推荐)**
+- 使用 `Live Server` 插件在 `index.html` 上右键点击 "Open with Live Server"。
+
+**方式二：Python HTTP Server**
+```bash
+cd frontend
+python -m http.server 8000
+```
+启动后访问 `http://localhost:8000/public/` 即可进入欢迎页面。
 
 ---
 
-## 🏗️ 系统架构
+## 📁 目录结构
 
 ```text
-esp-ai-server/
-├── app/                        # 核心业务逻辑
-│   ├── business/               # 业务模块 (对话/日记/睡前故事)
-│   ├── core/                   # 核心基座 (缓存/连接池/应用上下文)
-│   ├── devices/                # 硬件设备侧协议支持 (ESP32/OTA)
-│   ├── web/                    # Web端通信与HTTP支持
-│   ├── prompts/                # 系统人设与知识库提示词
-│   └── shared/                 # 跨模块共享服务 (音频缓存/大模型/Redis)
-├── frontend/                   # Web 端界面参考代码
-├── config/                     # 情绪、心理及引擎的 YAML 详细配置文件
-├── docker/                     # Docker 快速部署编排方案
-└── main.py                     # 启动主函数入口
+esp-ai-frontend/
+├── frontend/
+│   ├── public/             # 页面入口 (index.html, chat.html, login.html)
+│   ├── src/
+│   │   ├── css/            # 样式文件 (main.css, chat.css)
+│   │   ├── js/             # 核心逻辑
+│   │   │   ├── audio.js    # 音频采集与播放处理
+│   │   │   ├── chat.js     # 聊天会话逻辑控制
+│   │   │   ├── auth.js     # 用户登录与存储管理
+│   │   │   └── teen-features.js # 青少年专项业务逻辑
+│   │   └── assets/         # 静态资源 (图片、图标等)
+│   └── config.js           # 全局前端配置项
+└── node_modules/           # (可选) 开发辅助工具
 ```
 
 ---
 
-## 🐳 Docker 一键部署
+## 🛠️ 开发指南
 
-本项目推荐使用 Docker Compose 进行生产环境部署：
-
-1. 确认配置好 `.env` 文件
-2. 执行启动指令：
-   ```bash
-   docker-compose -f docker/docker-compose.yml up -d
-   ```
-3. 查看运行日志：
-   ```bash
-   docker-compose -f docker/docker-compose.yml logs -f
-   ```
-
----
-
-## ⚙️ 高级配置项设定
-本项目的行为逻辑深度可控，配置文件均存放在 `/config` 目录下：
-- `youth_psychology_config.yaml`：设定青少年意图识别阈值、危机干预关键词和专业转介热线。
-- `agent_config.yaml`：配置记忆系统（写入门阀、召回策略）及底层 Agent 运转表现。
+- **样式修改**：主要全局变量定义在 `main.css` 顶部的 `:root` 节点中（如主题色、边距等）。
+- **增加角色**：在服务端增加新角色后，前端会自动根据 WebSocket 消息中的 `role` 字段进行适配。
+- **音频调试**：开启 `config.js` 中的 `DEBUG: true` 可以在控制台查看到详细的音频包发送频率日志。
 
 ---
 
 ## 📄 许可证
 
-本项目采用 [MIT License](LICENSE) 许可证。
+本项目基于 [MIT](LICENSE) 许可证发布。
 
-## 🙏 致谢
+---
 
-- [阿里云大模型服务平台 (DashScope)](https://dashscope.aliyun.com/)
-- 所有致力于青少年心理健康事业的开源贡献者及心理工作者。
+<div align="center">
+
+**💙 每一个青少年的心理健康都值得被诚实对待。**
+
+Made with ❤️ for Youth Mental Health
+
+</div>
